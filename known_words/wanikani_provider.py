@@ -2,14 +2,19 @@ import requests
 import json
 import os
 import time
+import logging
 
 from typing import Set
 
 from known_words_provider import KnownWordsProvider
 
+# Logging config - debug
+logging.basicConfig(level=logging.DEBUG)
+logger = logging.getLogger(__name__)
+
 # Self rate-limiting
 def sleep(duration=0.5):
-    print(f"sleeping for {duration}")
+    logger.debug(f"sleeping for {duration}")
     time.sleep(duration)
 
 class WanikaniKnownWordsProvider(KnownWordsProvider):
@@ -20,9 +25,11 @@ class WanikaniKnownWordsProvider(KnownWordsProvider):
     def get_known_words(self, use_cache=True) -> Set[str]:
         # Read from cache first
         if use_cache and os.path.exists(self.cache_path):
+            logger.debug(f"Using existing cached data at {self.cache_path}")
             with open(self.cache_path, "r", encoding="utf-8") as f:
                 return set(json.load(f))
 
+        logger.info("Importing known word list from WaniKani API")
         return self._import_wk_known_words()
 
     def _import_wk_known_words(self) -> Set[str]:
@@ -31,6 +38,8 @@ class WanikaniKnownWordsProvider(KnownWordsProvider):
         # TODO: filter by SRS level/WK level
         url = "https://api.wanikani.com/v2/assignments?subject_types=vocabulary&started=true"
         while url:
+            logger.debug(f"Querying {url}")
+
             response = requests.get(url, headers=headers)
             response.raise_for_status()
             data = response.json()
@@ -52,6 +61,8 @@ class WanikaniKnownWordsProvider(KnownWordsProvider):
         known_vocab = set()
         for chunk in self._chunked(subject_ids, 1000):
             url = f"https://api.wanikani.com/v2/subjects?ids={','.join(map(str, chunk))}"
+            logger.debug(f"Querying {url}")
+
             response = requests.get(url, headers=headers)
             response.raise_for_status()
             data = response.json()

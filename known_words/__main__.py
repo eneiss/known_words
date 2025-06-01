@@ -1,7 +1,9 @@
 import wanikani_provider
 from os import environ
+import logging
 
 def main():
+    logging.basicConfig(level=logging.DEBUG)
     wk_api_key = environ.get("WK_API_KEY")
 
     if wk_api_key is None:
@@ -9,8 +11,8 @@ def main():
 
     wk_provider = wanikani_provider.WanikaniKnownWordsProvider(wk_api_key)
 
-    known_words = wk_provider.get_known_words()
-    # known_words = wk_provider.get_known_words(False)  # No cache
+    # known_words = wk_provider.get_known_words()
+    known_words = wk_provider.get_known_words(False)  # No cache
     print(known_words)
 
 
