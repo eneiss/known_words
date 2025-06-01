@@ -1,2 +1,2 @@
-# TODO: add other things here?
-__all__ = ["KnownWordsProvider", "WanikaniKnownWordsProvider"]
+from . import known_words_provider
+from . import wanikani_provider

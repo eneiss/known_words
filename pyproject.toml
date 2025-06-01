@@ -8,3 +8,7 @@ description = "A package to fetch known language words from several sources"
 #readme = "README.md"
 requires-python = ">=3.8"
 license = "MIT"
+
+[tool.poetry.dependencies]
+python = "^3.8"
+requests = "^2.32.3"

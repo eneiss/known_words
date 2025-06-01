@@ -6,7 +6,7 @@ import logging
 
 from typing import Set
 
-from known_words_provider import KnownWordsProvider
+from . import known_words_provider
 
 # Logging config - debug
 logging.basicConfig(level=logging.DEBUG)
@@ -17,7 +17,7 @@ def sleep(duration=0.5):
     logger.debug(f"sleeping for {duration}")
     time.sleep(duration)
 
-class WanikaniKnownWordsProvider(KnownWordsProvider):
+class WanikaniKnownWordsProvider(known_words_provider.KnownWordsProvider):
     def __init__(self, api_key: str, cache_path="../output/wanikani_known_words.json"):
         self.api_key = api_key
         self.cache_path = cache_path
