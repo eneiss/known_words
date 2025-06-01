@@ -1,0 +1,10 @@
+[project]
+name = "known_words"
+version = "0.0.1"
+authors = [
+  { name="Emma Neiss", email="33004979+eneiss@users.noreply.github.com"}
+]
+description = "A package to fetch known language words from several sources"
+#readme = "README.md"
+requires-python = ">=3.8"
+license = "MIT"
