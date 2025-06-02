@@ -52,6 +52,9 @@ class WanikaniKnownWordsProvider(known_words_provider.KnownWordsProvider):
         # Resolve subject_ids to actual vocab using a separate request
         known_vocab = self._resolve_vocab_meanings(known_item_ids, headers)
 
+        # Write result for caching
+        dir_path = os.path.dirname(self.cache_path)
+        os.makedirs(dir_path, exist_ok=True)
         with open(self.cache_path, "w", encoding="utf-8") as f:
             json.dump(list(known_vocab), f, ensure_ascii=False)
 
